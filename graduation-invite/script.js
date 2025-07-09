@@ -344,17 +344,40 @@ function initializeWishForm() {
     if (!wishForm || !wishList) return;
 
     // Load wishes từ Firebase
+    db.ref('wishes').off(); // Đảm bảo không bị lặp listener
     db.ref('wishes').on('value', (snapshot) => {
         wishList.innerHTML = '';
         const wishes = [];
-        snapshot.forEach(child => wishes.push(child.val()));
-        wishes.reverse().forEach(addWish); // Hiển thị mới nhất lên đầu
-        updateFloatingWishQueue(wishes); // Cập nhật queue cho floating wish
+        
+        // Kiểm tra nếu snapshot tồn tại và có dữ liệu
+        if (snapshot && snapshot.exists()) {
+            snapshot.forEach(child => {
+                if (child.val()) {
+                    wishes.push({...child.val(), _key: child.key});
+                }
+            });
+        }
+        
+        // Debug log
+        console.log('Wishes loaded from Firebase:', wishes.length, wishes);
+        
+        // Sắp xếp theo thời gian mới nhất trước
+        wishes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // Hiển thị mới nhất lên đầu
+        wishes.forEach(addWish);
+        
+        // Cập nhật queue cho floating wish
+        updateFloatingWishQueue(wishes);
+        
         // Hiển thị luôn 5 wish mới nhất (nếu chưa đủ 5)
         if (floatingWishActive.length < 5) {
             const toShow = floatingWishQueue.filter(w => !floatingWishActive.find(a => a.id === w.id)).slice(0, 5 - floatingWishActive.length);
             toShow.forEach(displayFloatingWish);
         }
+    }, (error) => {
+        console.error("Firebase error:", error);
+        showNotification('Lỗi kết nối đến cơ sở dữ liệu!');
     });
 
     wishForm.addEventListener('submit', function(e) {
@@ -369,41 +392,54 @@ function initializeWishForm() {
                 message: message,
                 timestamp: new Date().toISOString()
             };
-            // Lưu lên Firebase
-            db.ref('wishes').push(wish);
-            // Clear form
-            nameInput.value = '';
-            messageInput.value = '';
-            // Show floating wish (ưu tiên hiển thị ngay)
-            showFloatingWish(wish);
-            // Show notification
-            showNotification('Cảm ơn bạn đã gửi lời chúc!');
+            // Lưu lên Firebase bằng push (KHÔNG dùng set)
+            db.ref('wishes').push(wish, function(error) {
+                if (error) {
+                    showNotification('Lỗi gửi lời chúc, vui lòng thử lại!');
+                    console.error("Firebase push error:", error);
+                } else {
+                    // Clear form
+                    nameInput.value = '';
+                    messageInput.value = '';
+                    // Show floating wish (ưu tiên hiển thị ngay)
+                    showFloatingWish(wish);
+                    // Show notification
+                    showNotification('Cảm ơn bạn đã gửi lời chúc!');
+                }
+            });
         }
     });
 }
 
-// Add wish to display
+// Add wish to the list
 function addWish(wish) {
     const wishList = document.getElementById('wish-list');
+    if (!wishList) return;
+    
+    // Kiểm tra dữ liệu wish có hợp lệ không
+    if (!wish || !wish.name || !wish.message || !wish.timestamp) {
+        console.warn('Invalid wish data:', wish);
+        return;
+    }
+    
     const wishItem = document.createElement('div');
-    wishItem.className = 'wish-item';
-    wishItem.innerHTML = `
-        <strong>${escapeHtml(wish.name)}</strong>
-        <p>${escapeHtml(wish.message)}</p>
-        <small class="text-gray-500">${formatDate(wish.timestamp)}</small>
-    `;
+    wishItem.className = 'bg-white p-4 rounded shadow mb-4';
     
-    wishList.insertBefore(wishItem, wishList.firstChild);
-    
-    // Apply animation
-    wishItem.style.opacity = '0';
-    wishItem.style.transform = 'translateY(20px)';
-    wishItem.style.transition = 'all 0.5s ease';
-    
-  setTimeout(() => {
-        wishItem.style.opacity = '1';
-        wishItem.style.transform = 'none';
-    }, 10);
+    try {
+        const formattedDate = formatDate(wish.timestamp);
+        wishItem.innerHTML = `
+            <div class="flex justify-between items-start">
+                <div>
+                    <strong class="text-navy-900">${escapeHtml(wish.name)}</strong>
+                    <p class="text-gray-700 mt-1">${escapeHtml(wish.message)}</p>
+                </div>
+                <span class="text-xs text-gray-500">${formattedDate}</span>
+            </div>
+        `;
+        wishList.appendChild(wishItem);
+    } catch (error) {
+        console.error('Error adding wish:', error);
+    }
 }
 
 // Save wish to localStorage
@@ -613,17 +649,40 @@ function initializeWishForm() {
     if (!wishForm || !wishList) return;
 
     // Load wishes từ Firebase
+    db.ref('wishes').off(); // Đảm bảo không bị lặp listener
     db.ref('wishes').on('value', (snapshot) => {
         wishList.innerHTML = '';
         const wishes = [];
-        snapshot.forEach(child => wishes.push(child.val()));
-        wishes.reverse().forEach(addWish); // Hiển thị mới nhất lên đầu
-        updateFloatingWishQueue(wishes); // Cập nhật queue cho floating wish
+        
+        // Kiểm tra nếu snapshot tồn tại và có dữ liệu
+        if (snapshot && snapshot.exists()) {
+            snapshot.forEach(child => {
+                if (child.val()) {
+                    wishes.push({...child.val(), _key: child.key});
+                }
+            });
+        }
+        
+        // Debug log
+        console.log('Wishes loaded from Firebase:', wishes.length, wishes);
+        
+        // Sắp xếp theo thời gian mới nhất trước
+        wishes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // Hiển thị mới nhất lên đầu
+        wishes.forEach(addWish);
+        
+        // Cập nhật queue cho floating wish
+        updateFloatingWishQueue(wishes);
+        
         // Hiển thị luôn 5 wish mới nhất (nếu chưa đủ 5)
         if (floatingWishActive.length < 5) {
             const toShow = floatingWishQueue.filter(w => !floatingWishActive.find(a => a.id === w.id)).slice(0, 5 - floatingWishActive.length);
             toShow.forEach(displayFloatingWish);
         }
+    }, (error) => {
+        console.error("Firebase error:", error);
+        showNotification('Lỗi kết nối đến cơ sở dữ liệu!');
     });
 
     wishForm.addEventListener('submit', function(e) {
@@ -638,15 +697,21 @@ function initializeWishForm() {
                 message: message,
                 timestamp: new Date().toISOString()
             };
-            // Lưu lên Firebase
-            db.ref('wishes').push(wish);
-            // Clear form
-            nameInput.value = '';
-            messageInput.value = '';
-            // Show floating wish (ưu tiên hiển thị ngay)
-            showFloatingWish(wish);
-            // Show notification
-            showNotification('Cảm ơn bạn đã gửi lời chúc!');
+            // Lưu lên Firebase bằng push (KHÔNG dùng set)
+            db.ref('wishes').push(wish, function(error) {
+                if (error) {
+                    showNotification('Lỗi gửi lời chúc, vui lòng thử lại!');
+                    console.error("Firebase push error:", error);
+                } else {
+                    // Clear form
+                    nameInput.value = '';
+                    messageInput.value = '';
+                    // Show floating wish (ưu tiên hiển thị ngay)
+                    showFloatingWish(wish);
+                    // Show notification
+                    showNotification('Cảm ơn bạn đã gửi lời chúc!');
+                }
+            });
         }
     });
 }
