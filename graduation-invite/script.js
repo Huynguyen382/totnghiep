@@ -223,24 +223,30 @@ function initializeCountdown() {
 function initializeMusicPlayer() {
     const musicButton = document.getElementById('toggle-music');
     const bgMusic = document.getElementById('bg-music');
-let isPlaying = false;
-    
+    let isPlaying = false;
+
     if (!musicButton || !bgMusic) return;
-    
+
+    // Đặt trạng thái ban đầu là tắt
+    bgMusic.pause();
+    musicButton.textContent = 'Bật nhạc';
+    musicButton.classList.remove('playing');
+    isPlaying = false;
+
     musicButton.addEventListener('click', function() {
-  if (isPlaying) {
+        if (isPlaying) {
             bgMusic.pause();
             musicButton.textContent = 'Bật nhạc';
             musicButton.classList.remove('playing');
-  } else {
+        } else {
             bgMusic.play().catch(e => {
                 console.log('Auto-play prevented:', e);
                 showNotification('Vui lòng tương tác với trang để phát nhạc');
             });
             musicButton.textContent = 'Tắt nhạc';
             musicButton.classList.add('playing');
-  }
-  isPlaying = !isPlaying;
+        }
+        isPlaying = !isPlaying;
     });
 
     // Handle music events
@@ -251,19 +257,16 @@ let isPlaying = false;
     });
 }
 
-// Initialize particle effects for modern design
-function initializeParticleEffects() {
-    // Create particles for cover design
-    createCoverParticles();
-}
-
-// Create particles for cover design
+// Tối ưu hiệu ứng particles cho mobile: giảm số lượng và duration
 function createCoverParticles() {
     const particlesContainer = document.querySelector('.particles');
     if (!particlesContainer) return;
-    
-    // Create star particles
-    for (let i = 0; i < 20; i++) {
+    // Xóa particles cũ nếu có
+    particlesContainer.innerHTML = '';
+    // Giảm số lượng particles nếu là mobile
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 8 : 20;
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'star-particle';
         particle.style.cssText = `
@@ -275,20 +278,22 @@ function createCoverParticles() {
             top: ${Math.random() * 100}%;
             left: ${Math.random() * 100}%;
             opacity: ${Math.random() * 0.8 + 0.2};
-            animation: twinkle ${Math.random() * 3 + 2}s infinite ease-in-out;
+            animation: twinkle ${isMobile ? (Math.random() * 2 + 1) : (Math.random() * 3 + 2)}s infinite ease-in-out;
         `;
         particlesContainer.appendChild(particle);
     }
-    
-    // Add CSS for twinkling animation
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.5); }
-        }
-    `;
-    document.head.appendChild(style);
+    // Add CSS for twinkling animation (chỉ thêm 1 lần)
+    if (!document.getElementById('twinkle-style')) {
+        const style = document.createElement('style');
+        style.id = 'twinkle-style';
+        style.innerHTML = `
+            @keyframes twinkle {
+                0%, 100% { opacity: 0.2; transform: scale(1); }
+                50% { opacity: 0.8; transform: scale(1.5); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // Add special effects for cover page
