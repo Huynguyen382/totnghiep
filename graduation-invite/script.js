@@ -349,6 +349,12 @@ function initializeWishForm() {
         const wishes = [];
         snapshot.forEach(child => wishes.push(child.val()));
         wishes.reverse().forEach(addWish); // Hiển thị mới nhất lên đầu
+        updateFloatingWishQueue(wishes); // Cập nhật queue cho floating wish
+        // Hiển thị luôn 5 wish mới nhất (nếu chưa đủ 5)
+        if (floatingWishActive.length < 5) {
+            const toShow = floatingWishQueue.filter(w => !floatingWishActive.find(a => a.id === w.id)).slice(0, 5 - floatingWishActive.length);
+            toShow.forEach(displayFloatingWish);
+        }
     });
 
     wishForm.addEventListener('submit', function(e) {
@@ -368,8 +374,8 @@ function initializeWishForm() {
             // Clear form
             nameInput.value = '';
             messageInput.value = '';
-            // Show floating wish
-            showFloatingWish(message);
+            // Show floating wish (ưu tiên hiển thị ngay)
+            showFloatingWish(wish);
             // Show notification
             showNotification('Cảm ơn bạn đã gửi lời chúc!');
         }
@@ -580,36 +586,102 @@ window.floatingWishActive = window.floatingWishActive || [];
 const floatingWishQueue = window.floatingWishQueue;
 let floatingWishActive = window.floatingWishActive;
 
-function showFloatingWish(message) {
+// Hàm cập nhật queue lời chúc từ Firebase (ưu tiên mới nhất, không trùng lặp)
+function updateFloatingWishQueue(wishes) {
+    // Xóa queue cũ
+    floatingWishQueue.length = 0;
+    // Thêm mới nhất lên đầu, loại trùng lặp (theo name+message)
+    const seen = new Set();
+    wishes.forEach(wish => {
+        const key = wish.name + '|' + wish.message;
+        if (!seen.has(key)) {
+            floatingWishQueue.push({
+                id: wish.timestamp + Math.random(),
+                name: wish.name,
+                message: wish.message,
+                timestamp: wish.timestamp
+            });
+            seen.add(key);
+        }
+    });
+}
+
+// Sửa lại initializeWishForm để cập nhật floatingWishQueue và hiển thị 5 wish mới nhất
+function initializeWishForm() {
+    const wishForm = document.getElementById('wish-form');
+    const wishList = document.getElementById('wish-list');
+    if (!wishForm || !wishList) return;
+
+    // Load wishes từ Firebase
+    db.ref('wishes').on('value', (snapshot) => {
+        wishList.innerHTML = '';
+        const wishes = [];
+        snapshot.forEach(child => wishes.push(child.val()));
+        wishes.reverse().forEach(addWish); // Hiển thị mới nhất lên đầu
+        updateFloatingWishQueue(wishes); // Cập nhật queue cho floating wish
+        // Hiển thị luôn 5 wish mới nhất (nếu chưa đủ 5)
+        if (floatingWishActive.length < 5) {
+            const toShow = floatingWishQueue.filter(w => !floatingWishActive.find(a => a.id === w.id)).slice(0, 5 - floatingWishActive.length);
+            toShow.forEach(displayFloatingWish);
+        }
+    });
+
+    wishForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nameInput = document.getElementById('wish-name');
+        const messageInput = document.getElementById('wish-message');
+        const name = nameInput.value.trim();
+        const message = messageInput.value.trim();
+        if (name && message) {
+            const wish = {
+                name: name,
+                message: message,
+                timestamp: new Date().toISOString()
+            };
+            // Lưu lên Firebase
+            db.ref('wishes').push(wish);
+            // Clear form
+            nameInput.value = '';
+            messageInput.value = '';
+            // Show floating wish (ưu tiên hiển thị ngay)
+            showFloatingWish(wish);
+            // Show notification
+            showNotification('Cảm ơn bạn đã gửi lời chúc!');
+        }
+    });
+}
+
+// Sửa showFloatingWish để nhận object wish (có name/message)
+function showFloatingWish(wish) {
     const floatingWishes = document.getElementById('floating-wishes');
     if (!floatingWishes) return;
-
     // Thêm wish mới vào queue, ưu tiên hiển thị ngay
-    floatingWishQueue.unshift({ message, id: Date.now() + Math.random() });
-
+    floatingWishQueue.unshift({
+        id: wish.timestamp + Math.random(),
+        name: wish.name,
+        message: wish.message,
+        timestamp: wish.timestamp
+    });
     // Nếu đã có 5 wish đang hiển thị, loại bỏ wish cũ nhất
     while (floatingWishes.childElementCount >= 5) {
         floatingWishes.removeChild(floatingWishes.firstChild);
         floatingWishActive.shift();
     }
-
     // Hiển thị wish mới ngay lập tức
     displayFloatingWish(floatingWishQueue[0]);
 }
 
+// Sửa displayFloatingWish để hiển thị cả tên và nội dung
 function displayFloatingWish(wishObj) {
     const floatingWishes = document.getElementById('floating-wishes');
     if (!floatingWishes) return;
-
     // Nếu đã đủ 5 wish đang hiển thị, không hiển thị thêm
     if (floatingWishes.childElementCount >= 5) return;
-
     // Nếu wish này đã hiển thị và chưa biến mất, không hiển thị lại
     if (floatingWishActive.find(w => w.id === wishObj.id)) return;
-
     const wishDiv = document.createElement('div');
     wishDiv.className = 'floating-wish';
-    wishDiv.textContent = wishObj.message;
+    wishDiv.innerHTML = `<strong>${escapeHtml(wishObj.name)}</strong><br><span>${escapeHtml(wishObj.message)}</span>`;
 
     // Lấy vị trí và kích thước của #book
     const book = document.getElementById('book');
