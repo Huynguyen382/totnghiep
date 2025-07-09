@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Graduation Invitation Loaded');
     
     // Initialize components
+    initializeHeader(); // New header initialization
     initializeBook();
     initializeCountdown();
     initializeMusicPlayer();
@@ -31,6 +32,115 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     } catch (e) {}
 });
+
+// Header initialization with animations
+function initializeHeader() {
+    const header = document.querySelector('.graduation-header');
+    if (!header) return;
+    
+    // Add entrance animation
+    header.style.opacity = '0';
+    header.style.transform = 'translateY(-20px)';
+    
+    setTimeout(() => {
+        header.style.transition = 'all 0.8s ease';
+        header.style.opacity = '1';
+        header.style.transform = 'translateY(0)';
+    }, 300);
+    
+    // Add shimmer effect to the title
+    const title = header.querySelector('h1');
+    if (title) {
+        title.classList.add('text-shimmer');
+        
+        // Create shimmer style if not exists
+        if (!document.getElementById('shimmer-style')) {
+            const style = document.createElement('style');
+            style.id = 'shimmer-style';
+            style.textContent = `
+                .text-shimmer {
+                    position: relative;
+                    overflow: hidden;
+                }
+                .text-shimmer::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 50%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                    animation: shimmer 3s infinite;
+                }
+                @keyframes shimmer {
+                    0% { left: -100%; }
+                    100% { left: 200%; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Add parallax effect to header particles - only on desktop
+    const particles = header.querySelector('.particles');
+    if (particles) {
+        if (!isMobileDevice()) {
+            window.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                particles.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        } else {
+            // On mobile, use device orientation if available
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    // Only apply if we have valid orientation data
+                    if (e.beta !== null && e.gamma !== null) {
+                        const moveX = e.gamma * 0.1; // Left/right tilt
+                        const moveY = e.beta * 0.1;  // Front/back tilt
+                        particles.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    }
+                });
+            }
+        }
+    }
+    
+    // Handle header responsiveness on resize
+    window.addEventListener('resize', adjustHeaderForScreenSize);
+    adjustHeaderForScreenSize();
+}
+
+// Function to adjust header based on screen size
+function adjustHeaderForScreenSize() {
+    const header = document.querySelector('.graduation-header');
+    if (!header) return;
+    
+    const isMobile = window.innerWidth < 768;
+    const isVerySmall = window.innerWidth < 480;
+    
+    // Adjust container layout
+    const container = header.querySelector('.container');
+    if (container) {
+        if (isMobile) {
+            container.classList.remove('md:flex-row');
+            container.classList.add('flex-col');
+        } else {
+            container.classList.add('md:flex-row');
+        }
+    }
+    
+    // Adjust info items for very small screens
+    const infoItems = header.querySelectorAll('.header-info-item');
+    infoItems.forEach(item => {
+        if (isVerySmall) {
+            item.style.width = '100%';
+            item.style.justifyContent = 'center';
+        } else {
+            item.style.width = '';
+            item.style.justifyContent = '';
+        }
+    });
+}
 
 // Book initialization with Turn.js
 function initializeBook() {

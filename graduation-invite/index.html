@@ -16,6 +16,64 @@
   <audio id="bg-music" src="assets/music/placeholder.mp3" loop></audio>
   <button id="toggle-music" class="fixed top-4 right-4 z-50 bg-yellow-400 text-white px-3 py-2 rounded shadow">Bật/Tắt nhạc</button>
 
+  <!-- Header trang trọng -->
+  <header class="graduation-header bg-gradient-to-r from-navy-900 via-purple-900 to-navy-900 text-white py-6 shadow-lg relative overflow-hidden">
+    <!-- Hiệu ứng hạt sáng -->
+    <div class="particles absolute inset-0 z-10 opacity-30"></div>
+    
+    <!-- Trang trí góc -->
+    <div class="absolute top-0 left-0 w-24 h-24 opacity-20">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M0,0 L100,0 L0,100 Z" fill="gold"></path>
+      </svg>
+    </div>
+    <div class="absolute bottom-0 right-0 w-24 h-24 opacity-20">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M100,100 L0,100 L100,0 Z" fill="gold"></path>
+      </svg>
+    </div>
+    
+    <div class="container mx-auto px-4 flex flex-col items-center justify-between relative z-20">
+      <!-- Logo và tiêu đề -->
+      <div class="flex items-center mb-6 md:mb-0 text-center md:text-left">
+        <div class="mr-3 md:mr-4 flex-shrink-0">
+          <svg width="40" height="40" viewBox="0 0 64 64" fill="none" class="md:w-12 md:h-12">
+            <g>
+              <polygon points="32,8 60,20 32,32 4,20" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+              <rect x="28" y="32" width="8" height="12" rx="2" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+              <line x1="32" y1="44" x2="32" y2="56" stroke="#C8A54A" stroke-width="2"/>
+              <circle cx="32" cy="56" r="2.5" fill="#C8A54A"/>
+              <rect x="30" y="20" width="4" height="8" fill="#C8A54A"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-3xl font-serif font-bold tracking-wider">LỄ TỐT NGHIỆP</h1>
+          <p class="text-yellow-300 font-serif italic tracking-wide text-sm md:text-base">Graduation Ceremony 2025</p>
+        </div>
+      </div>
+      
+      <!-- Thông tin chính -->
+      <div class="flex flex-wrap justify-center md:flex-row items-center">
+        <div class="header-info-item flex items-center mx-2 md:mx-3 mb-2 md:mb-0">
+          <i class="fas fa-calendar-alt text-yellow-300 mr-2"></i>
+          <span class="text-sm md:text-base">10/07/2025</span>
+        </div>
+        <div class="header-info-item flex items-center mx-2 md:mx-3 mb-2 md:mb-0">
+          <i class="fas fa-clock text-yellow-300 mr-2"></i>
+          <span class="text-sm md:text-base">9:30 AM</span>
+        </div>
+        <div class="header-info-item flex items-center mx-2 md:mx-3">
+          <i class="fas fa-map-marker-alt text-yellow-300 mr-2"></i>
+          <span class="text-sm md:text-base">Cung Văn hoá Việt Xô</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dải băng trang trí -->
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
+  </header>
+
   <!-- Thiệp mời dạng sách -->
   <div id="book-container" class="w-full max-w-6xl mx-auto my-8 relative">
     <div id="book" class="book">

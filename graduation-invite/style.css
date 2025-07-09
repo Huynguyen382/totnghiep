@@ -14,6 +14,117 @@ body {
   color: #1a2233;
 }
 
+/* Header styling */
+.graduation-header {
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(200, 165, 74, 0.3);
+}
+
+.graduation-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C8A54A, transparent);
+  z-index: 5;
+}
+
+.graduation-header .particles {
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.3) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: header-particles-float 15s infinite linear;
+}
+
+@keyframes header-particles-float {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+.header-info-item {
+  position: relative;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.header-info-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 70%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200, 165, 74, 0.5), transparent);
+}
+
+.header-info-item:hover {
+  transform: translateY(-2px);
+}
+
+.header-info-item i {
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+}
+
+@media (max-width: 768px) {
+  .graduation-header {
+    padding: 1rem 0;
+  }
+  
+  .header-info-item {
+    padding: 0.3rem 0.6rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .header-info-item:not(:last-child)::after {
+    display: none;
+  }
+  
+  .graduation-header .container {
+    gap: 0.5rem;
+  }
+  
+  .graduation-header h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .graduation-header p {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .graduation-header {
+    padding: 0.75rem 0;
+  }
+  
+  .header-info-item {
+    width: 100%;
+    justify-content: center;
+    margin: 0.2rem 0;
+  }
+  
+  .graduation-header h1 {
+    font-size: 1.1rem;
+  }
+  
+  .graduation-header svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 /* Book styling */
 #book-container {
   perspective: 1200px;
