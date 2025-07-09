@@ -651,33 +651,34 @@ function initializeWishForm() {
     });
 }
 
-// Sửa showFloatingWish để nhận object wish (có name/message)
+// Helper: kiểm tra mobile
+function isMobileDevice() {
+    return window.innerWidth < 768;
+}
+
+// Sửa lại các hàm floating wish để không hiển thị trên mobile
 function showFloatingWish(wish) {
+    if (isMobileDevice()) return; // Không hiển thị trên mobile
     const floatingWishes = document.getElementById('floating-wishes');
     if (!floatingWishes) return;
-    // Thêm wish mới vào queue, ưu tiên hiển thị ngay
     floatingWishQueue.unshift({
         id: wish.timestamp + Math.random(),
         name: wish.name,
         message: wish.message,
         timestamp: wish.timestamp
     });
-    // Nếu đã có 5 wish đang hiển thị, loại bỏ wish cũ nhất
     while (floatingWishes.childElementCount >= 5) {
         floatingWishes.removeChild(floatingWishes.firstChild);
         floatingWishActive.shift();
     }
-    // Hiển thị wish mới ngay lập tức
     displayFloatingWish(floatingWishQueue[0]);
 }
 
-// Sửa displayFloatingWish để hiển thị cả tên và nội dung
 function displayFloatingWish(wishObj) {
+    if (isMobileDevice()) return; // Không hiển thị trên mobile
     const floatingWishes = document.getElementById('floating-wishes');
     if (!floatingWishes) return;
-    // Nếu đã đủ 5 wish đang hiển thị, không hiển thị thêm
     if (floatingWishes.childElementCount >= 5) return;
-    // Nếu wish này đã hiển thị và chưa biến mất, không hiển thị lại
     if (floatingWishActive.find(w => w.id === wishObj.id)) return;
     const wishDiv = document.createElement('div');
     wishDiv.className = 'floating-wish';
@@ -804,6 +805,7 @@ function makeWishDraggable(wishDiv) {
 }
 
 function repeatRandomFloatingWish() {
+    if (isMobileDevice()) return; // Không hiển thị trên mobile
     // Nếu đang đủ 5 wish active, không lặp lại
     if (floatingWishActive.length >= 5) return;
     // Lấy các wish chưa active
