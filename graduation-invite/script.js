@@ -54,7 +54,7 @@ function initializeBook() {
                 autoCenter: true,
                 duration: 1000,
                 display: isMobile ? 'single' : 'double',
-                page: 3,
+                page: isMobile ? 1 : 3, // mobile vào trang 1, desktop vào trang 3
                 acceleration: true,
                 gradients: true,
                 elevation: 50,
@@ -232,6 +232,26 @@ function initializeMusicPlayer() {
     musicButton.textContent = 'Bật nhạc';
     musicButton.classList.remove('playing');
     isPlaying = false;
+
+    // Tự động phát nhạc khi vào trang (nếu được phép)
+    setTimeout(() => {
+        bgMusic.play().then(() => {
+            isPlaying = true;
+            musicButton.textContent = 'Tắt nhạc';
+            musicButton.classList.add('playing');
+        }).catch(() => {
+            // Nếu bị chặn, phát khi user click đầu tiên
+            const tryPlay = () => {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicButton.textContent = 'Tắt nhạc';
+                    musicButton.classList.add('playing');
+                });
+                document.removeEventListener('click', tryPlay);
+            };
+            document.addEventListener('click', tryPlay);
+        });
+    }, 500);
 
     musicButton.addEventListener('click', function() {
         if (isPlaying) {
