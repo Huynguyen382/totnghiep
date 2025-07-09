@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lễ Tốt Nghiệp - Graduation Ceremony</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Thêm jQuery trước Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-white text-gray-900 font-sans">
+  <!-- Nhạc nền (ẩn, có nút bật/tắt) -->
+  <audio id="bg-music" src="assets/music/placeholder.mp3" loop></audio>
+  <button id="toggle-music" class="fixed top-4 right-4 z-50 bg-yellow-400 text-white px-3 py-2 rounded shadow">Bật/Tắt nhạc</button>
+
+  <!-- Thiệp mời dạng sách -->
+  <div id="book-container" class="w-full max-w-6xl mx-auto my-8 relative">
+    <div id="book" class="book">
+      <!-- Trang 1: Bìa trái (hard cover) -->
+      <div class="hard page cover-front flex items-center justify-center">
+        <div class="cover-front-design w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+          <!-- Nền gradient sang trọng -->
+          <div class="absolute inset-0 bg-gradient-to-br from-navy-900 via-purple-900 to-yellow-400 z-0"></div>
+          <!-- Hiệu ứng hạt sáng -->
+          <div class="particles absolute inset-0 z-10"></div>
+          <!-- Mũ tốt nghiệp lớn ở giữa -->
+          <div class="relative z-20 mb-8 animate-float">
+            <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
+              <g>
+                <polygon points="32,8 60,20 32,32 4,20" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                <rect x="28" y="32" width="8" height="12" rx="2" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                <line x1="32" y1="44" x2="32" y2="56" stroke="#C8A54A" stroke-width="2"/>
+                <circle cx="32" cy="56" r="2.5" fill="#C8A54A"/>
+                <rect x="30" y="20" width="4" height="8" fill="#C8A54A"/>
+              </g>
+            </svg>
+          </div>
+          <!-- Tiêu đề bìa -->
+          <h1 class="text-4xl md:text-5xl font-serif font-bold mb-2 text-white text-center z-20 tracking-wider drop-shadow-lg">GRADUATION<br><span class="text-yellow-300">CEREMONY</span></h1>
+          <h2 class="text-2xl md:text-3xl font-serif text-yellow-200 mb-4 z-20 tracking-widest">2025</h2>
+          <!-- Tên chủ nhân -->
+          <div class="z-20 mt-4">
+            <span class="font-serif text-2xl md:text-3xl text-white font-bold italic tracking-widest bg-yellow-600 bg-opacity-30 px-4 py-2 rounded-xl shadow-lg">Nguyễn Văn Huy</span>
+          </div>
+          <!-- Icon trang trí -->
+          <div class="absolute top-8 left-8 z-10">
+            <i class="fas fa-star text-yellow-300 text-3xl opacity-60 animate-pulse"></i>
+          </div>
+          <div class="absolute bottom-8 right-8 z-10">
+            <i class="fas fa-ribbon text-yellow-300 text-3xl opacity-60 animate-float"></i>
+          </div>
+          <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black to-transparent opacity-30 z-10"></div>
+        </div>
+      </div>
+      <!-- Trang 2: Bìa phải (hard cover) -->
+      <div class="hard page cover-back flex items-center justify-center">
+        <div class="cover-design w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+          <!-- Nền gradient với hiệu ứng -->
+          <div class="absolute inset-0 bg-gradient-to-br from-navy-900 via-blue-900 to-purple-900 z-0"></div>
+          
+          <!-- Hiệu ứng hạt sáng -->
+          <div class="particles absolute inset-0 z-10"></div>
+          
+          <!-- Mũ tốt nghiệp lớn ở giữa -->
+          <div class="relative z-20 mb-8 animate-float">
+            <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
+              <g>
+                <polygon points="32,8 60,20 32,32 4,20" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                <rect x="28" y="32" width="8" height="12" rx="2" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                <line x1="32" y1="44" x2="32" y2="56" stroke="#C8A54A" stroke-width="2"/>
+                <circle cx="32" cy="56" r="2.5" fill="#C8A54A"/>
+                <rect x="30" y="20" width="4" height="8" fill="#C8A54A"/>
+              </g>
+            </svg>
+          </div>
+          
+          <!-- Tiêu đề -->
+          <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4 text-white text-center z-20 tracking-wider">LỄ TỐT NGHIỆP</h1>
+          <h2 class="text-2xl md:text-3xl font-serif text-yellow-300 mb-6 z-20">2025</h2>
+          
+          <!-- Tên -->
+          <div class="name-signature z-20 mt-8">
+            <span class="font-serif text-3xl text-white font-bold italic tracking-widest">Nguyễn Văn Huy</span>
+          </div>
+          
+          <!-- Hiệu ứng trang trí -->
+          <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent opacity-40 z-10"></div>
+          <div class="absolute top-10 right-10 z-10">
+            <i class="fas fa-award text-yellow-300 text-4xl opacity-50"></i>
+          </div>
+          <div class="absolute bottom-10 left-10 z-10">
+            <i class="fas fa-certificate text-yellow-300 text-4xl opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 3: Thư mời dự lễ tốt nghiệp 2025 (bên trái) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="invitation-card-modern relative flex flex-col items-center justify-center min-h-[600px] p-10 overflow-hidden">
+            <!-- Nền với hiệu ứng -->
+            <div class="absolute inset-0 bg-gradient-to-br from-yellow-50 to-yellow-200 z-0"></div>
+            
+            <!-- Họa tiết trang trí -->
+            <div class="absolute top-0 left-0 w-full h-full z-10 opacity-10">
+              <div class="absolute top-0 right-0">
+                <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+                  <circle cx="100" cy="100" r="80" stroke="#C8A54A" stroke-width="2" stroke-dasharray="10 5"/>
+                  <circle cx="100" cy="100" r="40" stroke="#C8A54A" stroke-width="2" stroke-dasharray="8 4"/>
+                </svg>
+              </div>
+              <div class="absolute bottom-0 left-0">
+                <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+                  <circle cx="100" cy="100" r="80" stroke="#C8A54A" stroke-width="2" stroke-dasharray="10 5"/>
+                  <circle cx="100" cy="100" r="40" stroke="#C8A54A" stroke-width="2" stroke-dasharray="8 4"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Nội dung chính -->
+            <div class="relative z-20 flex flex-col items-center text-center">
+              <!-- Icon mũ tốt nghiệp với hiệu ứng -->
+              <div class="mb-6 animate-bounce-slow">
+        <div class="relative">
+                  <div class="absolute -top-1 -left-1 w-16 h-16 bg-yellow-300 rounded-full opacity-30 animate-pulse"></div>
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="relative">
+            <g>
+              <polygon points="32,8 60,20 32,32 4,20" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+              <rect x="28" y="32" width="8" height="12" rx="2" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+              <line x1="32" y1="44" x2="32" y2="56" stroke="#C8A54A" stroke-width="2"/>
+              <circle cx="32" cy="56" r="2.5" fill="#C8A54A"/>
+              <rect x="30" y="20" width="4" height="8" fill="#C8A54A"/>
+            </g>
+          </svg>
+        </div>
+              </div>
+              
+              <!-- Tiêu đề với hiệu ứng -->
+              <div class="invitation-title mb-8">
+                <h1 class="text-4xl md:text-5xl font-serif font-bold text-navy-900 leading-tight animate-fade-in">
+                  Thư mời dự lễ<br>
+                  <span class="text-yellow-600">tốt nghiệp 2025</span>
+                </h1>
+              </div>
+              
+              <!-- Nội dung thư mời -->
+              <div class="invitation-content max-w-xl bg-white bg-opacity-80 p-6 rounded-xl shadow-lg border-l-4 border-yellow-400 animate-fade-in delay-100">
+                <p class="text-lg md:text-xl mb-4 text-gray-800">Kính mời quý vị phụ huynh, thầy cô và bạn bè đến dự buổi lễ tốt nghiệp của tôi.</p>
+                <p class="italic text-gray-600 mb-6">Xin cảm ơn gia đình, thầy cô và bạn bè đã đồng hành trên chặng đường này.</p>
+              </div>
+              
+              <!-- Nút với hiệu ứng -->
+              <button id="flip-button" class="mt-8 bg-gradient-to-r from-yellow-400 to-yellow-500 text-navy-900 px-6 py-3 rounded-full font-bold shadow-lg hover:from-yellow-500 hover:to-yellow-400 transition-all duration-300 animate-fade-in delay-300 flex items-center">
+                <span>Xem hành trình học tập</span>
+                <i class="fas fa-chevron-right ml-2"></i>
+              </button>
+              
+              <!-- Chữ ký cá nhân với hiệu ứng -->
+              <div class="mt-10 text-right w-full animate-fade-in delay-500">
+                <span class="font-serif text-2xl text-yellow-700 font-bold italic tracking-widest signature">Nguyễn Văn Huy</span>
+              </div>
+            </div>
+            
+            <!-- Họa tiết trang trí góc -->
+            <div class="absolute top-4 right-4 z-10 opacity-50">
+              <i class="fas fa-graduation-cap text-yellow-600 text-2xl"></i>
+            </div>
+            <div class="absolute bottom-4 left-4 z-10 opacity-50">
+              <i class="fas fa-book text-yellow-600 text-2xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 4: Thông tin của tôi (bên phải) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="personal-info bg-white text-navy-900 flex flex-col items-center justify-center p-8">
+            <div class="relative mb-10 mt-8 flex items-center justify-center" style="min-height:240px; margin-bottom: 20px;">
+              <div class="avatar-ring-wrapper relative flex items-center justify-center" style="padding-top:40px;">
+                <!-- Mũ tốt nghiệp SVG -->
+                <svg class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 z-20" viewBox="0 0 64 64" fill="none">
+                  <g>
+                    <polygon points="32,8 60,20 32,32 4,20" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                    <rect x="28" y="32" width="8" height="12" rx="2" fill="#222" stroke="#C8A54A" stroke-width="2"/>
+                    <line x1="32" y1="44" x2="32" y2="56" stroke="#C8A54A" stroke-width="2"/>
+                    <circle cx="32" cy="56" r="2.5" fill="#C8A54A"/>
+                    <rect x="30" y="20" width="4" height="8" fill="#C8A54A"/>
+                  </g>
+          </svg>
+                <span class="avatar-ring absolute w-56 h-56 rounded-full border-4 border-yellow-400 animate-avatar-ring"></span>
+                <img src="assets/images/avatar.jpg" alt="Ảnh tốt nghiệp" class="w-48 h-48 rounded-full object-cover border-4 relative z-10" style="border-color:#C8A54A;">
+              </div>
+        </div>
+            <h2 class="text-2xl font-serif font-bold mb-2">Nguyễn Văn Huy</h2>
+            <p class="text-lg mb-6">Sinh viên ngành Công nghệ thông tin</p>
+            <div class="event-details w-full max-w-md bg-gray-50 p-4 rounded-lg shadow-sm" style="min-height:370px; max-width:370px; width:370px;">
+              <h3 class="text-xl font-bold mb-2 text-center">Thông tin sự kiện</h3>
+              <ul class="space-y-2">
+                <li><strong>Thời gian:</strong> 9:30, 10/07/2025</li>
+                <li><strong>Địa điểm:</strong> Cung Văn hoá Lao động Hữu Nghị Việt Xô - Số 91 Trần Hưng Đạo, Quận Hoàn Kiếm, TP. Hà Nội</li>
+                <li><strong>Dress code:</strong> Trang trọng, áo tốt nghiệp</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Các trang tiếp theo giữ nguyên -->
+      <!-- Trang 1: Năm 2021 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-yellow-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2021</h2>
+            <img src="assets/images/photo1-placeholder.jpg" alt="Kỷ niệm 2021" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg">Khởi đầu hành trình đại học với nhiều bỡ ngỡ, háo hức làm quen bạn mới, thầy cô mới và môi trường học tập hoàn toàn khác biệt. Những ký ức đầu tiên thật đáng nhớ!</p>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 2: Năm 2022 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-blue-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2022</h2>
+            <img src="assets/images/photo2-placeholder.jpg" alt="Kỷ niệm 2022" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg">Bắt đầu hòa nhập với nhịp sống sinh viên, tham gia các hoạt động ngoại khóa, câu lạc bộ và dần khám phá, định hình đam mê, mục tiêu của bản thân.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Năm 2022 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-blue-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2022</h2>
+            <img src="assets/images/thamgiahoithao.jpg" alt="Kỷ niệm 2022" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg"> Một ngày của năm 2022, ngồi giữa những người bạn, lắng nghe những chia sẻ đáng giá. Ai ngờ giờ đây đã là ảnh lưu trong album tốt nghiệp.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 3: Năm 2023 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-green-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2023</h2>
+            <img src="assets/images/photo3-placeholder.jpg" alt="Kỷ niệm 2023" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg">Năm học bản lề với nhiều thử thách học thuật, lần đầu tiên áp dụng kiến thức vào các dự án thực tế, chuẩn bị hành trang cho kỳ thực tập sắp tới.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 4: Năm 2024 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-purple-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2024</h2>
+            <img src="assets/images/photo4-placeholder.jpg" alt="Kỷ niệm 2024" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg">Năm cuối đại học với đồ án, bài thi và những nỗ lực không ngừng nghỉ. Cùng bạn bè, thầy cô tạo nên những kỷ niệm đẹp trước khi chia tay giảng đường.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Trang 5: Năm 2025 -->
+      <div class="page">
+        <div class="page-content">
+          <div class="year-page bg-red-50 p-8 flex flex-col items-center">
+            <h2 class="text-3xl font-serif font-bold mb-6 text-navy-900">Năm 2025</h2>
+            <img src="assets/images/avatar.jpg" alt="Tốt nghiệp 2025" class="w-full max-w-md h-64 object-cover rounded-lg shadow-md mb-6">
+            <p class="text-lg text-center max-w-lg">Khoảnh khắc tốt nghiệp - đánh dấu sự trưởng thành, khép lại hành trình sinh viên với biết bao kỷ niệm, mở ra một chương mới đầy hy vọng và thử thách phía trước.</p>
+            <div class="mt-8">
+              <span class="font-bold">Đếm ngược đến ngày tốt nghiệp:</span>
+              <span id="countdown" class="ml-2 text-yellow-600 font-mono"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Trang trắng cuối cùng để đảm bảo số trang chẵn cho Turn.js -->
+      <div class="page"><div class="page-content bg-white"></div></div>
+      <!-- Trang bìa sau - hard page (nếu muốn) -->
+      <!-- <div class="hard page cover-back"></div> -->
+    </div>
+    
+    <!-- Nút điều hướng -->
+    <div class="navigation-buttons mt-4 flex justify-center space-x-4">
+      <button id="prev-btn" class="bg-navy-900 text-white px-4 py-2 rounded disabled:opacity-50">Trang trước</button>
+      <button id="next-btn" class="bg-navy-900 text-white px-4 py-2 rounded">Trang sau</button>
+    </div>
+  </div>
+
+  <!-- Các phần còn lại giữ nguyên -->
+  <!-- Thông tin sự kiện với bản đồ -->
+  <section id="event" class="py-16 bg-navy-900 text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-serif font-bold mb-4">Vị trí tổ chức</h2>
+      <div class="mb-4">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.4637692807!2d105.84822707596708!3d21.01368198063923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab8c8a0b0e65%3A0x47b4d1a0a6c22b89!2zQ3VuZyBWxINuIGhvw6EgTGFvIMSR4buZbmcgSOG7r3UgTmdo4buLIFZp4buHdCBYw7Q!5e0!3m2!1svi!2s!4v1719848391316!5m2!1svi!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <!-- QR Google Calendar -->
+      <div class="flex flex-col items-center justify-center mt-4">
+        <img src="assets/images/calendar-qr-placeholder.png" alt="QR Google Calendar" class="w-24 h-24 mb-2">
+        <span class="text-sm text-white">Quét mã để lưu lịch vào Google Calendar</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gửi lời chúc -->
+  <section id="wishes" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-serif font-bold mb-4">Gửi lời chúc</h2>
+      <form id="wish-form" class="mb-6 flex flex-col md:flex-row md:space-x-4">
+        <input type="text" id="wish-name" placeholder="Tên của bạn" required class="border p-2 rounded mb-2 md:mb-0">
+        <input type="text" id="wish-message" placeholder="Lời chúc của bạn" required class="border p-2 rounded mb-2 md:mb-0 flex-1">
+        <button type="submit" class="bg-navy-900 text-white px-4 py-2 rounded">Gửi</button>
+      </form>
+      <div id="wish-list" class="space-y-4 bg-gray-50 p-4 rounded shadow">
+        <!-- Lời chúc sẽ được hiển thị ở đây -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Quà mừng -->
+  <section id="gift" class="py-16 bg-yellow-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-serif font-bold mb-4">Quà mừng</h2>
+      <div class="flex flex-col md:flex-row md:space-x-8 items-center">
+        <div class="mb-4 md:mb-0">
+          <p><strong>Ngân hàng:</strong> Hẹ hẹ cái này k có</p>
+          <p><strong>Số tài khoản:</strong> Để cho vui thôi</p>
+          <p><strong>Chủ tài khoản:</strong> Nguyễn Văn Huy</p>
+        </div>
+        <img src="assets/images/momo-qr-placeholder.png" alt="QR MoMo" class="w-32 h-32">
+      </div>
+    </div>
+  </section>
+
+  <!-- Chia sẻ -->
+  <section id="share" class="py-16 bg-navy-900 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-serif font-bold mb-4">Chia sẻ</h2>
+      <div class="flex justify-center space-x-6 mb-4">
+        <button id="share-facebook" class="bg-blue-600 px-4 py-2 rounded">Chia sẻ Facebook</button>
+        <button id="share-zalo" class="bg-blue-400 px-4 py-2 rounded">Chia sẻ Zalo</button>
+      </div>
+      <div class="flex flex-col items-center">
+        <img src="assets/images/website-qr-placeholder.png" alt="QR code website" class="w-24 h-24 mb-2">
+        <span>Quét mã để truy cập trang web</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hiệu ứng pháo hoa (canvas) -->
+  <canvas id="fireworks" class="fixed inset-0 pointer-events-none z-40"></canvas>
+
+  <div id="floating-wishes" class="pointer-events-none fixed inset-0 z-50"></div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <!-- Turn.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+  <!-- Custom script -->
+  <script src="script.js"></script>
+</body>
+</html> 
